@@ -12,7 +12,7 @@ const basketCartBtn = document.querySelector('.page-header__cart-btn');
 let cartCounter = 0;
 let cartPrice = 0;
 let restoreHTML = null;
-let productInBasketArr = null;
+let productInBasketArr = [];
 
 const cartCounterLabelPrint = (i) => (i > 0) ? cartCounterLabel.innerHTML = `${i}` : cartCounterLabel.style.display = 'none';
 
@@ -45,7 +45,6 @@ function enableControls(t, $el, fn) {
 }
 
 function writeProductToBasket(p, arr) {
-
   let item = null;
 
   const productName = getProductName(p);
@@ -59,14 +58,21 @@ function writeProductToBasket(p, arr) {
     let i = 0;
 
     for (let i = 0; i < arr.length; i++) {
-      (arr[i].productCode === getProductName(p)) ? item = i : i++
-    };
-    if (item === null) arr.push(product)
-    else {
+      if (arr[i].productCode === getProductName(p)) {
+        item = i;
+        break;
+      }
+    }
+
+    if (item === null) {
+      arr.push(product);
+    } else {
       arr[item].count++;
       arr[item].sum = Math.round((arr[item].sum + arr[item].price) * 100) / 100;
-    };
-  } else arr = [product];
+    }
+  } else {
+    arr = [product];
+  }
 
   return arr;
 };
